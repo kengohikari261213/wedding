@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Kengo &amp; Hikari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F5F6F3;--ink:#1E2638;--muted:#6A707D;--line:#D3D7CF;--card:#FFFFFF;--seal:#7B2D3B;--seal-ink:#F3E6E0;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--paper:#141821;--ink:#E9E7E1;--muted:#9EA3AE;--line:#323949;--card:#1C212C;--seal:#A9475A;--seal-ink:#F6E9E4;color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;min-height:100svh;display:flex;justify-content:center}
+main{width:100%;max-width:30rem;padding:3.5rem 1.5rem 4rem;text-align:center}
+header{margin-bottom:3rem}
+.names{font-size:1.75rem;letter-spacing:.06em;margin:0}
+.date{font-size:.95rem;color:var(--muted);letter-spacing:.2em;margin:.4rem 0 0}
+.seal{width:5.5rem;height:5.5rem;margin:0 auto 2.25rem;border-radius:50%;background:var(--seal);color:var(--seal-ink);display:grid;place-items:center;font-size:1.25rem;letter-spacing:.04em;
+ box-shadow:inset 0 0 0 .3rem color-mix(in srgb,var(--seal) 70%,#000),inset 0 0 0 .38rem color-mix(in srgb,var(--seal) 80%,#fff);transition:transform .7s ease,opacity .7s ease}
+.opened .seal{transform:scale(1.25) rotate(-8deg);opacity:0}
+label{display:block;font-size:.95rem;margin-bottom:1rem}
+#pass{display:block;width:100%;max-width:15rem;margin:0 auto;padding:.7rem 1rem;font:inherit;font-size:1.4rem;letter-spacing:.35em;text-align:center;text-transform:uppercase;
+ background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:4px}
+#open{margin-top:1.25rem;font:inherit;font-size:1rem;padding:.7rem 2rem;border:0;border-radius:4px;background:var(--ink);color:var(--paper);cursor:pointer}
+#open:disabled{opacity:.6;cursor:wait}
+button:focus-visible,#pass:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
+#err{min-height:1.6em;color:var(--seal);font-size:.9rem;margin:1rem 0 0}
+#letter{background:var(--card);border:1px solid var(--line);padding:2.5rem 1.75rem 2rem;text-align:left;opacity:0;transform:translateY(.75rem);transition:opacity .8s ease .25s,transform .8s ease .25s}
+#letter.show{opacity:1;transform:none}
+#to{font-size:1.3rem;font-weight:600;margin:0 0 1.5rem}
+#photo{display:block;width:100%;height:auto;margin:0 0 1.75rem}
+#msg{white-space:pre-wrap;line-height:2.05;font-size:1rem;margin:0}
+.sign{text-align:right;margin:2rem 0 0;font-size:1rem}
+.back{display:block;margin:2.5rem auto 0;background:none;border:0;color:var(--muted);font:inherit;font-size:.85rem;text-decoration:underline;text-underline-offset:.25em;cursor:pointer}
+@media (prefers-reduced-motion:reduce){.seal,#letter{transition:none}}
+</style>
+</head>
+<body>
+<main id="root">
+<header><p class="names">Kengo &amp; Hikari</p><p class="date">2026.12.13</p></header>
+<section id="gate">
+<div class="seal" aria-hidden="true">K&amp;H</div>
+<label for="pass">席札に書かれたPASSを入力してください</label>
+<input id="pass" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="12" enterkeyhint="go">
+<button id="open">メッセージを開く</button>
+<p id="err" role="alert"></p>
+</section>
+<article id="letter" hidden>
+<p id="to"></p>
+<img id="photo" alt="" hidden>
+<p id="msg"></p>
+<p class="sign">賢吾・ひかり</p>
+</article>
+<button class="back" id="back" hidden>別のPASSを入力する</button>
+</main>
+<script>
+const SALT="ion29M8gjFIrY96O2SlObw==",ITER=200000;
+const enc=new TextEncoder(),dec=new TextDecoder(),$=id=>document.getElementById(id);
+const fromB64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+function normalize(p){return String(p||"").replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).toUpperCase().replace(/[\s\-ー－]/g,"");}
+async function derive(pass){
+ const km=await crypto.subtle.importKey("raw",enc.encode(pass),"PBKDF2",false,["deriveBits"]);
+ const bits=new Uint8Array(await crypto.subtle.deriveBits({name:"PBKDF2",salt:fromB64(SALT),iterations:ITER,hash:"SHA-256"},km,512));
+ const key=await crypto.subtle.importKey("raw",bits.slice(0,32),"AES-GCM",false,["decrypt"]);
+ return {key,id:[...bits.slice(32,44)].map(b=>b.toString(16).padStart(2,"0")).join("")};
+}
+async function openLetter(){
+ const p=normalize($("pass").value);$("err").textContent="";
+ if(!p){$("err").textContent="PASSを入力してください。";return;}
+ $("open").disabled=true;$("open").textContent="確認中…";
+ try{
+  const {key,id}=await derive(p);
+  const r=await fetch("data/"+id+".json",{cache:"no-store"});
+  if(!r.ok)throw new Error("nf");
+  const d=await r.json();
+  const m=JSON.parse(dec.decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:fromB64(d.iv)},key,fromB64(d.ct))));
+  $("to").textContent=m.to+" さんへ";
+  $("msg").textContent=m.message;
+  if(m.photo){$("photo").src=m.photo;$("photo").hidden=false;}else{$("photo").hidden=true;}
+  $("root").classList.add("opened");
+  setTimeout(()=>{$("gate").hidden=true;$("letter").hidden=false;$("back").hidden=false;requestAnimationFrame(()=>$("letter").classList.add("show"));window.scrollTo(0,0);},matchMedia("(prefers-reduced-motion:reduce)").matches?0:600);
+ }catch(e){
+  $("err").textContent="PASSが一致しません。席札の文字をもう一度確認してください。";
+ }finally{$("open").disabled=false;$("open").textContent="メッセージを開く";}
+}
+$("open").onclick=openLetter;
+$("pass").addEventListener("keydown",e=>{if(e.key==="Enter")openLetter();});
+$("back").onclick=()=>{$("letter").classList.remove("show");$("letter").hidden=true;$("back").hidden=true;$("photo").removeAttribute("src");$("root").classList.remove("opened");$("gate").hidden=false;$("pass").value="";$("pass").focus();};
+</script>
+</body>
+</html>

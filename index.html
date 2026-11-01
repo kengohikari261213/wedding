@@ -65,7 +65,7 @@ button:focus-visible,#pass:focus-visible{outline:1px solid var(--rule);outline-o
 <button class="back" id="back" hidden>ANOTHER PASS</button>
 </main>
 <script>
-const SALT="IdDwc/ZCey9SN5uTV2Kgzw==",ITER=200000;
+const SALT="nYI4l69AhKKEkr2MxlmGcA==",ITER=200000;
 const enc=new TextEncoder(),dec=new TextDecoder(),$=id=>document.getElementById(id);
 const fromB64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 function normalize(p){return String(p||"").replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).toUpperCase().replace(/[\s\-ー－]/g,"");}

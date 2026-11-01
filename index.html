@@ -58,7 +58,7 @@ button:focus-visible,#pass:focus-visible{outline:2px solid var(--seal);outline-o
 <button class="back" id="back" hidden>別のPASSを入力する</button>
 </main>
 <script>
-const SALT="ion29M8gjFIrY96O2SlObw==",ITER=200000;
+const SALT="lJZ45jnxbQZqrc31gxtITg==",ITER=200000;
 const enc=new TextEncoder(),dec=new TextDecoder(),$=id=>document.getElementById(id);
 const fromB64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 function normalize(p){return String(p||"").replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).toUpperCase().replace(/[\s\-ー－]/g,"");}

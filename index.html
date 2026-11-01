@@ -4,61 +4,68 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#4A1517">
 <title>Kengo &amp; Hikari</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Pinyon+Script&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#F5F6F3;--ink:#1E2638;--muted:#6A707D;--line:#D3D7CF;--card:#FFFFFF;--seal:#7B2D3B;--seal-ink:#F3E6E0;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--paper:#141821;--ink:#E9E7E1;--muted:#9EA3AE;--line:#323949;--card:#1C212C;--seal:#A9475A;--seal-ink:#F6E9E4;color-scheme:dark}}
+:root{--page:#4A1517;--paper:#F4ECDA;--ink:#5A1A1D;--sub:#8A5A55;--rule:#6E2226;--field:#FBF6EA;--onrule:#F4ECDA;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--page:#2A0B0D;--paper:#E9DFC9;--ink:#51171A;--sub:#7E5049;--rule:#5E1C20;--field:#F2EADA;--onrule:#F1E8D4;color-scheme:dark}}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html,body{margin:0;background:var(--paper);color:var(--ink)}
-body{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;min-height:100svh;display:flex;justify-content:center}
-main{width:100%;max-width:30rem;padding:3.5rem 1.5rem 4rem;text-align:center}
-header{margin-bottom:3rem}
-.names{font-size:1.75rem;letter-spacing:.06em;margin:0}
-.date{font-size:.95rem;color:var(--muted);letter-spacing:.2em;margin:.4rem 0 0}
-.seal{width:5.5rem;height:5.5rem;margin:0 auto 2.25rem;border-radius:50%;background:var(--seal);color:var(--seal-ink);display:grid;place-items:center;font-size:1.25rem;letter-spacing:.04em;
- box-shadow:inset 0 0 0 .3rem color-mix(in srgb,var(--seal) 70%,#000),inset 0 0 0 .38rem color-mix(in srgb,var(--seal) 80%,#fff);transition:transform .7s ease,opacity .7s ease}
-.opened .seal{transform:scale(1.25) rotate(-8deg);opacity:0}
-label{display:block;font-size:.95rem;margin-bottom:1rem}
-#pass{display:block;width:100%;max-width:15rem;margin:0 auto;padding:.7rem 1rem;font:inherit;font-size:1.4rem;letter-spacing:.35em;text-align:center;text-transform:uppercase;
- background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:4px}
-#open{margin-top:1.25rem;font:inherit;font-size:1rem;padding:.7rem 2rem;border:0;border-radius:4px;background:var(--ink);color:var(--paper);cursor:pointer}
+html,body{margin:0;background:var(--page)}
+body{min-height:100svh;padding:1rem;display:flex;justify-content:center;align-items:flex-start;font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;color:var(--ink)}
+.card{position:relative;width:100%;max-width:28rem;min-height:calc(100svh - 2rem);background:var(--paper);border:3px solid var(--rule);padding:3.25rem 1.75rem 2.5rem;text-align:center;box-shadow:0 1.5rem 3rem rgba(0,0,0,.25)}
+.card::before{content:"";position:absolute;inset:7px;border:1px solid var(--rule);pointer-events:none}
+.names{font-family:"Pinyon Script",cursive;font-size:2.6rem;line-height:1.1;margin:0;font-weight:400}
+.date{font-family:"Cinzel",serif;font-size:.8rem;letter-spacing:.32em;margin:.9rem 0 0;color:var(--sub)}
+.mono{width:6.5rem;height:6.5rem;margin:2.75rem auto 2.5rem;border-radius:50%;border:1px solid var(--rule);box-shadow:inset 0 0 0 5px var(--paper),inset 0 0 0 6px var(--rule);display:grid;place-items:center;font-family:"Pinyon Script",cursive;font-size:1.9rem;transition:transform .8s ease,opacity .8s ease}
+.opened .mono{transform:scale(1.15);opacity:0}
+.label-en{font-family:"Cinzel",serif;font-size:.75rem;letter-spacing:.35em;margin:0 0 .5rem;color:var(--sub)}
+label{display:block;font-size:.95rem;margin-bottom:1.25rem}
+#pass{display:block;width:100%;max-width:14rem;margin:0 auto;padding:.6rem .5rem;font-family:"Cinzel",serif;font-size:1.35rem;letter-spacing:.4em;text-indent:.4em;text-align:center;text-transform:uppercase;background:var(--field);color:var(--ink);border:0;border-bottom:1px solid var(--rule);border-radius:0}
+#open{margin-top:1.75rem;font:inherit;font-size:.95rem;letter-spacing:.12em;padding:.8rem 2.25rem;border:0;border-radius:0;background:var(--rule);color:var(--onrule);cursor:pointer}
 #open:disabled{opacity:.6;cursor:wait}
-button:focus-visible,#pass:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
-#err{min-height:1.6em;color:var(--seal);font-size:.9rem;margin:1rem 0 0}
-#letter{background:var(--card);border:1px solid var(--line);padding:2.5rem 1.75rem 2rem;text-align:left;opacity:0;transform:translateY(.75rem);transition:opacity .8s ease .25s,transform .8s ease .25s}
+button:focus-visible,#pass:focus-visible{outline:1px solid var(--rule);outline-offset:4px}
+#err{min-height:1.6em;font-size:.85rem;margin:1rem 0 0}
+.flourish{width:3.5rem;height:1px;background:var(--rule);margin:2.5rem auto 0;opacity:.6}
+#letter{text-align:left;margin-top:2.25rem;opacity:0;transform:translateY(.75rem);transition:opacity .9s ease .2s,transform .9s ease .2s}
 #letter.show{opacity:1;transform:none}
-#to{font-size:1.3rem;font-weight:600;margin:0 0 1.5rem}
-#photo{display:block;width:100%;height:auto;margin:0 0 1.75rem}
-#msg{white-space:pre-wrap;line-height:2.05;font-size:1rem;margin:0}
-.sign{text-align:right;margin:2rem 0 0;font-size:1rem}
-.back{display:block;margin:2.5rem auto 0;background:none;border:0;color:var(--muted);font:inherit;font-size:.85rem;text-decoration:underline;text-underline-offset:.25em;cursor:pointer}
-@media (prefers-reduced-motion:reduce){.seal,#letter{transition:none}}
+.dear{font-family:"Pinyon Script",cursive;font-size:2rem;margin:0;text-align:center;font-weight:400}
+#to{font-size:1.15rem;font-weight:500;letter-spacing:.06em;margin:.25rem 0 1.75rem;text-align:center}
+#photo{display:block;width:100%;height:auto;margin:0 0 1.75rem;padding:5px;background:var(--field);border:1px solid var(--rule)}
+#msg{white-space:pre-wrap;line-height:2.1;font-size:.98rem;margin:0}
+.closing{margin:2.25rem 0 0;text-align:right}
+.closing .script{font-family:"Pinyon Script",cursive;font-size:1.6rem;display:block;line-height:1.2}
+.closing .sign{font-size:.95rem;letter-spacing:.08em}
+.back{display:block;margin:2.5rem auto 0;background:none;border:0;color:var(--sub);font-family:"Cinzel",serif;font-size:.7rem;letter-spacing:.25em;cursor:pointer;text-decoration:underline;text-underline-offset:.35em}
+@media (prefers-reduced-motion:reduce){.mono,#letter{transition:none}}
 </style>
 </head>
 <body>
-<main id="root">
+<main class="card" id="root">
 <header><p class="names">Kengo &amp; Hikari</p><p class="date">2026.12.13</p></header>
 <section id="gate">
-<div class="seal" aria-hidden="true">K&amp;H</div>
+<div class="mono" aria-hidden="true">K&amp;H</div>
+<p class="label-en">PASS</p>
 <label for="pass">席札に書かれたPASSを入力してください</label>
 <input id="pass" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="12" enterkeyhint="go">
 <button id="open">メッセージを開く</button>
 <p id="err" role="alert"></p>
+<div class="flourish" aria-hidden="true"></div>
 </section>
 <article id="letter" hidden>
+<p class="dear">Dear</p>
 <p id="to"></p>
 <img id="photo" alt="" hidden>
 <p id="msg"></p>
-<p class="sign">賢吾・ひかり</p>
+<p class="closing"><span class="script">with love,</span><span class="sign">賢吾・ひかり</span></p>
 </article>
-<button class="back" id="back" hidden>別のPASSを入力する</button>
+<button class="back" id="back" hidden>ANOTHER PASS</button>
 </main>
 <script>
-const SALT="lJZ45jnxbQZqrc31gxtITg==",ITER=200000;
+const SALT="IdDwc/ZCey9SN5uTV2Kgzw==",ITER=200000;
 const enc=new TextEncoder(),dec=new TextDecoder(),$=id=>document.getElementById(id);
 const fromB64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 function normalize(p){return String(p||"").replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).toUpperCase().replace(/[\s\-ー－]/g,"");}
@@ -82,7 +89,7 @@ async function openLetter(){
   $("msg").textContent=m.message;
   if(m.photo){$("photo").src=m.photo;$("photo").hidden=false;}else{$("photo").hidden=true;}
   $("root").classList.add("opened");
-  setTimeout(()=>{$("gate").hidden=true;$("letter").hidden=false;$("back").hidden=false;requestAnimationFrame(()=>$("letter").classList.add("show"));window.scrollTo(0,0);},matchMedia("(prefers-reduced-motion:reduce)").matches?0:600);
+  setTimeout(()=>{$("gate").hidden=true;$("letter").hidden=false;$("back").hidden=false;requestAnimationFrame(()=>$("letter").classList.add("show"));window.scrollTo(0,0);},matchMedia("(prefers-reduced-motion:reduce)").matches?0:650);
  }catch(e){
   $("err").textContent="PASSが一致しません。席札の文字をもう一度確認してください。";
  }finally{$("open").disabled=false;$("open").textContent="メッセージを開く";}

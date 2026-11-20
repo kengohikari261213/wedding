@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#4A1517">
+<title>Kengo &amp; Hikari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Pinyon+Script&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--page:#4A1517;--paper:#F4ECDA;--ink:#5A1A1D;--sub:#8A5A55;--rule:#6E2226;--field:#FBF6EA;--onrule:#F4ECDA;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--page:#2A0B0D;--paper:#E9DFC9;--ink:#51171A;--sub:#7E5049;--rule:#5E1C20;--field:#F2EADA;--onrule:#F1E8D4;color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--page)}
+body{min-height:100svh;padding:1rem;display:flex;justify-content:center;align-items:flex-start;font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;color:var(--ink)}
+.card{position:relative;width:100%;max-width:28rem;min-height:calc(100svh - 2rem);background:var(--paper);border:3px solid var(--rule);padding:3.25rem 1.75rem 2.5rem;text-align:center;box-shadow:0 1.5rem 3rem rgba(0,0,0,.25)}
+.card::before{content:"";position:absolute;inset:7px;border:1px solid var(--rule);pointer-events:none}
+.names{font-family:"Pinyon Script",cursive;font-size:2.6rem;line-height:1.1;margin:0;font-weight:400}
+.date{font-family:"Cinzel",serif;font-size:.8rem;letter-spacing:.32em;margin:.9rem 0 0;color:var(--sub)}
+.mono{width:6.5rem;height:6.5rem;margin:2.75rem auto 2.5rem;border-radius:50%;border:1px solid var(--rule);box-shadow:inset 0 0 0 5px var(--paper),inset 0 0 0 6px var(--rule);display:grid;place-items:center;font-family:"Pinyon Script",cursive;font-size:1.9rem;transition:transform .8s ease,opacity .8s ease}
+.mono.photo{width:9rem;height:9rem;padding:9px}
+.mono.photo img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.opened .mono{transform:scale(1.15);opacity:0}
+.label-en{font-family:"Cinzel",serif;font-size:.75rem;letter-spacing:.35em;margin:0 0 .5rem;color:var(--sub)}
+label{display:block;font-size:.95rem;margin-bottom:1.25rem}
+#pass{display:block;width:100%;max-width:17rem;margin:0 auto;padding:.6rem .5rem;font-family:"Cinzel","Shippori Mincho",serif;font-size:1.25rem;letter-spacing:.2em;text-indent:.2em;text-align:center;text-transform:uppercase;background:var(--field);color:var(--ink);border:0;border-bottom:1px solid var(--rule);border-radius:0}
+#open{margin-top:1.75rem;font:inherit;font-size:.95rem;letter-spacing:.12em;padding:.8rem 2.25rem;border:0;border-radius:0;background:var(--rule);color:var(--onrule);cursor:pointer}
+#open:disabled{opacity:.6;cursor:wait}
+button:focus-visible,#pass:focus-visible{outline:1px solid var(--rule);outline-offset:4px}
+#err{min-height:1.6em;font-size:.85rem;margin:1rem 0 0}
+.flourish{width:3.5rem;height:1px;background:var(--rule);margin:2.5rem auto 0;opacity:.6}
+#letter{text-align:left;margin-top:2.25rem;opacity:0;transform:translateY(.75rem);transition:opacity .9s ease .2s,transform .9s ease .2s}
+#letter.show{opacity:1;transform:none}
+.dear{font-family:"Pinyon Script",cursive;font-size:2rem;margin:0;text-align:center;font-weight:400}
+#to{font-size:1.15rem;font-weight:500;letter-spacing:.06em;margin:.25rem 0 1.75rem;text-align:center}
+#photo{display:block;width:100%;height:auto;margin:0 0 1.75rem;padding:5px;background:var(--field);border:1px solid var(--rule)}
+#msg{white-space:pre-wrap;line-height:2.1;font-size:.98rem;margin:0}
+.closing{margin:2.25rem 0 0;text-align:right}
+.closing .script{font-family:"Pinyon Script",cursive;font-size:1.6rem;display:block;line-height:1.2}
+.closing .sign{font-size:.95rem;letter-spacing:.08em}
+.back{display:block;margin:2.5rem auto 0;background:none;border:0;color:var(--sub);font-family:"Cinzel",serif;font-size:.7rem;letter-spacing:.25em;cursor:pointer;text-decoration:underline;text-underline-offset:.35em}
+@media (prefers-reduced-motion:reduce){.mono,#letter{transition:none}}
+</style>
+</head>
+<body>
+<main class="card" id="root">
+<header><p class="names">Kengo &amp; Hikari</p><p class="date">2026.12.13</p></header>
+<section id="gate">
+<div class="mono" aria-hidden="true">K&amp;H</div>
+<p class="label-en">PASS</p>
+<label for="pass">席札に書かれたPASSを入力してください</label>
+<input id="pass" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="24" enterkeyhint="go">
+<button id="open">メッセージを開く</button>
+<p id="err" role="alert"></p>
+<div class="flourish" aria-hidden="true"></div>
+</section>
+<article id="letter" hidden>
+<p class="dear">Dear</p>
+<p id="to"></p>
+<img id="photo" alt="" hidden>
+<p id="msg"></p>
+<p class="closing"><span class="script">with love,</span><span class="sign">賢吾・ひかり</span></p>
+</article>
+<button class="back" id="back" hidden>ANOTHER PASS</button>
+</main>
+<script>
+const SALT="Hk0rmcrLycd4Ct30DT6fFw==",ITER=200000;
+const enc=new TextEncoder(),dec=new TextDecoder(),$=id=>document.getElementById(id);
+const fromB64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+function normalize(p){return String(p||"").normalize("NFKC").replace(/[\u30A1-\u30F6]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60)).toUpperCase().replace(/[\s\-ー－・]/g,"");}
+async function derive(pass){
+ const km=await crypto.subtle.importKey("raw",enc.encode(pass),"PBKDF2",false,["deriveBits"]);
+ const bits=new Uint8Array(await crypto.subtle.deriveBits({name:"PBKDF2",salt:fromB64(SALT),iterations:ITER,hash:"SHA-256"},km,512));
+ const key=await crypto.subtle.importKey("raw",bits.slice(0,32),"AES-GCM",false,["decrypt"]);
+ return {key,id:[...bits.slice(32,44)].map(b=>b.toString(16).padStart(2,"0")).join("")};
+}
+async function openLetter(){
+ const p=normalize($("pass").value);$("err").textContent="";
+ if(!p){$("err").textContent="PASSを入力してください。";return;}
+ $("open").disabled=true;$("open").textContent="確認中…";
+ try{
+  const {key,id}=await derive(p);
+  const r=await fetch("data/"+id+".json",{cache:"no-store"});
+  if(!r.ok)throw new Error("nf");
+  const d=await r.json();
+  const m=JSON.parse(dec.decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:fromB64(d.iv)},key,fromB64(d.ct))));
+  $("to").textContent=m.to+" さんへ";
+  $("msg").textContent=m.message;
+  if(m.photo){$("photo").src=m.photo;$("photo").hidden=false;}else{$("photo").hidden=true;}
+  $("root").classList.add("opened");
+  setTimeout(()=>{$("gate").hidden=true;$("letter").hidden=false;$("back").hidden=false;requestAnimationFrame(()=>$("letter").classList.add("show"));window.scrollTo(0,0);},matchMedia("(prefers-reduced-motion:reduce)").matches?0:650);
+ }catch(e){
+  $("err").textContent="PASSが一致しません。席札の文字をもう一度確認してください。";
+ }finally{$("open").disabled=false;$("open").textContent="メッセージを開く";}
+}
+$("open").onclick=openLetter;
+$("pass").addEventListener("keydown",e=>{if(e.key==="Enter")openLetter();});
+$("back").onclick=()=>{$("letter").classList.remove("show");$("letter").hidden=true;$("back").hidden=true;$("photo").removeAttribute("src");$("root").classList.remove("opened");$("gate").hidden=false;$("pass").value="";$("pass").focus();};
+</script>
+</body>
+</html>

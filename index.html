@@ -90,7 +90,7 @@ body.opened .hero{opacity:0}
 /* 便箋の中身 */
 .l-dear{font-family:"Pinyon Script",cursive;font-size:2rem;margin:0;text-align:center;font-weight:400;line-height:1.1}
 .l-to{font-size:1.1rem;font-weight:500;letter-spacing:.06em;margin:.3rem 0 1.5rem;text-align:center}
-.l-photo{display:block;width:100%;height:auto;margin:0 0 1.5rem;padding:5px;background:#F4ECDA;border:1px solid #C9B8A0}
+.l-photo{display:block;width:auto;height:auto;max-width:100%;max-height:max(7rem,calc(100svh - var(--eb) - var(--ct) - var(--eh)*1.07 - 12.5rem));margin:0 auto 1.5rem;padding:5px;background:#F4ECDA;border:1px solid #C9B8A0}
 .l-msg{white-space:pre-wrap;line-height:2.05;font-size:.97rem;margin:0}
 .closing{margin:2rem 0 0;text-align:right}
 .closing .script{font-family:"Pinyon Script",cursive;font-size:1.6rem;display:block;line-height:1.2}
@@ -135,7 +135,7 @@ body.opened .hero{opacity:0}
 <p class="l-hint" id="lHint">SCROLL ↓</p>
 </div>
 <script>
-const SALT="jFdigbFk5T0YvYVXVw1qPQ==",ITER=200000;
+const SALT="eGeV+ZXgnzAdA1WIgzq8FA==",ITER=200000;
 const enc=new TextEncoder(),dec=new TextDecoder(),$=id=>document.getElementById(id);
 const fromB64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 function normalize(p){return String(p||"").normalize("NFKC").replace(/[\u30A1-\u30F6]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60)).toUpperCase().replace(/[\s\-ー－・]/g,"");}
